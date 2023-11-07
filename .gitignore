@@ -1,0 +1,16 @@
+HELP.md
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+.vscode/
+
+.dbdata
+educatrice/__pychache__/*
+educatrice/__pychache__/
+educatrice/migrations/*
+educatrice/migrations/
