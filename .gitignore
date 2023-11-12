@@ -10,7 +10,12 @@ HELP.md
 .vscode/
 
 .dbdata
-educatrice/__pychache__/*
-educatrice/__pychache__/
-educatrice/migrations/*
+.dbdatapg
+educatrice/__pycache__
+educatrice/__pycache__/*
+educatrice/tests/__pycache__
+educatrice/tests/__pycache__/*
 educatrice/migrations/
+educatrice/migrations/*
+garderie_educatrice/__pycache__/
+garderie_educatrice/__pycache__/*
