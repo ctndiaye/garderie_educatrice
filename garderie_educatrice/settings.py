@@ -79,6 +79,7 @@ WSGI_APPLICATION = 'garderie_educatrice.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+#For dev
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -86,9 +87,24 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': 'db_educatrice',
-        'PORT': '3306'
+        'PORT': '3306', 
+        'TEST': {
+            'NAME': 'garderie_test',
+            'DEPENDENCIES': ['test_db'],
+        }
+    },
+    'test_db': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'garderie_test',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'garderie_test',
+        'PORT': '5432',
+        'TEST': {
+            'DEPENDENCIES': [],
+        }
     }
-}
+} 
 
 
 # Password validation

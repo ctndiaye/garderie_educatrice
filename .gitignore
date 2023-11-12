@@ -11,10 +11,12 @@ HELP.md
 
 .dbdata
 .dbdatapg
+.pytest_cache
 educatrice/__pycache__
 educatrice/__pycache__/*
 educatrice/tests/__pycache__
 educatrice/tests/__pycache__/*
+educatrice/tests/__init__.py
 educatrice/migrations/
 educatrice/migrations/*
 garderie_educatrice/__pycache__/
