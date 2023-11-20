@@ -23,3 +23,14 @@ services:
       - .dbdata:/var/lib/mysql
     ports:
       - "33066:3306"
+
+  garderie_test:
+    image: postgres:13.1
+    environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_DB=garderie_test
+    volumes:
+      - .dbdatapg:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
