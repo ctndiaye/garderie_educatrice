@@ -1,11 +1,22 @@
-node {
-  stage('SCM') {
-    checkout scm
+pipeline {
+  agent {
+    label 'python_docker_slave'
   }
-  stage('SonarQube Analysis') {
-    def scannerHome = tool 'SonarScanner';
-    withSonarQubeEnv() {
-      sh "${scannerHome}/bin/sonar-scanner"
+  stages{
+    stage('Checkout') { // Checkout (git clone ...) the projects repository
+      steps {
+        checkout scm
+      }
+    }
+    stage('Setup') { // Install any dependencies you need to perform testing
+      steps {
+        sh 'pip install -r requirements.txt'
+      }
+    }
+    stage('Tests unitaires') {
+      steps {
+        sh 'python manage.py test'
+      }
     }
   }
-} 
+}
