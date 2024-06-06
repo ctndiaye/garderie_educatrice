@@ -9,6 +9,7 @@ MSG_MOT_DE_PASSE_INCORRECT = "Le mot de passe est incorrect"
 MSG_CREDENTIAL_INCORRECT = "Nom d'utilisateur ou mot de passe incorrect"
 MSG_CREDENTIAL_CORRECT = "Vous êtes connecté"
 
+
 def delete_hidden_field(my_fields_dic, field_to_delete):
     for item in field_to_delete:
         if item in my_fields_dic:

@@ -3,5 +3,4 @@ djangorestframework==3.13
 mysqlclient==2.2.0
 django-cors-headers==4.3.0
 pytest
-psycopg2
 passlib

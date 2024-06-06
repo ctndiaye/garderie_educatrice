@@ -1,14 +1,10 @@
-from typing import Any
 from django.db import models
 
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
+
 # Create your models here.
-from django.db import models
-
-from .managers import EducatriceManager
-
 
 class StatutObjet(models.TextChoices):
     INSERT = ("insert", _("INSERT"))
@@ -61,8 +57,7 @@ class Presence(models.Model):
     heure_evenement = models.DateTimeField(name='heure_evenement', auto_now_add=True)
     type_evenement = models.CharField(name='type_evenement', max_length=6, null=False, choices=Evenement.choices,
                                       help_text="Heure d'arrivé ou de départ")
-    educatrice = models.ForeignKey('Educatrice', name='educatrice', on_delete=models.DO_NOTHING)
+    educatrice = models.ForeignKey(Educatrice, name='educatrice', on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return f'Presence("{self.type_evenement}", "{self.educatrice.get_full_name()}", "{self.sexe}")'
-
+        return f'Presence("{self.type_evenement}", "{self.educatrice.get_full_name()}", "{self.educatrice.sexe}")'

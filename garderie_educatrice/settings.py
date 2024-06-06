@@ -9,11 +9,14 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
+
+import garderie_educatrice
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 # Quick-start development settings - unsuitable for production
@@ -79,32 +82,30 @@ WSGI_APPLICATION = 'garderie_educatrice.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-#For dev
+# For dev
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'db_educatrice',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': 'db_educatrice',
-        'PORT': '3306', 
+        'HOST': 'localhost',
+        'PORT': '3306',
         'TEST': {
             'NAME': 'garderie_test',
             'DEPENDENCIES': ['test_db'],
         }
     },
     'test_db': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'garderie_test',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'garderie_test',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PROJECT_DIR, 'garderie_test.db'),
+        'USER': 'admin',
+        'PASSWORD': 'admin',
         'TEST': {
             'DEPENDENCIES': [],
         }
     }
-} 
+}
 
 
 # Password validation
