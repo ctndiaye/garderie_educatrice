@@ -18,7 +18,7 @@ educatrice/__pycache__/*
 educatrice/tests/__pycache__
 educatrice/tests/__pycache__/*
 educatrice/tests/__init__.py
-educatrice/migrations/
-educatrice/migrations/*
+educatrice/migrations/__pycache__
+educatrice/migrations/__pycache__/*
 garderie_educatrice/__pycache__/
 garderie_educatrice/__pycache__/*

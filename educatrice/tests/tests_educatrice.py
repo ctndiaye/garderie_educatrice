@@ -1,26 +1,20 @@
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "garderie_educatrice.settings")
+import django
+django.setup()
+from django.core.management import call_command
+
 from django.test import TestCase
 import pytest
-import os
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "garderie_educatrice.settings")
-
-import django
-
-django.setup()
-
-from django.core.management import call_command
 from educatrice.models import Educatrice
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "garderie_educatrice.settings")
-
-django.setup()
 
 pytestmark = pytest.mark.django_db
 
 
 @pytest.mark.django_db
 class EducatriceTestClass(TestCase):
-    databases = ['test_db', 'default']
+    databases = ['db_educatrice_test', 'default']
 
     create = """{
         "last_name": "SAMIRA",
@@ -46,7 +40,6 @@ class EducatriceTestClass(TestCase):
                                   est_qualifie=True, username="user!r@", password="s@pwd!r1",
                                   email="email@gmail.com", is_active=True)
         print("setUpTestData: Run once to set up non-modified data for all class methods.")
-        pass
 
     def setUp(self):
         print("setUp: Run once for every test method to setup clean data.")
