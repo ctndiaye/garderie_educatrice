@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
-import garderie_educatrice
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -28,12 +26,19 @@ SECRET_KEY = 'django-insecure-y_j)2f30zg21y@(qzk!%!+7+y=*0mj&x_me^9un&mr-ggwe7ac
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['testserver']
 
 AUTH_USER_MODEL = "educatrice.Educatrice"
 
 
 # Application definition
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.ScryptPasswordHasher",
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -98,7 +103,7 @@ DATABASES = {
     },
     'test_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_DIR, 'garderie_test.db'),
+        'NAME': os.path.join(PROJECT_DIR, 'test.db'),
         'USER': 'admin',
         'PASSWORD': 'admin',
         'TEST': {
