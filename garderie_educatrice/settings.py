@@ -9,12 +9,11 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-import os
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +24,9 @@ SECRET_KEY = 'django-insecure-y_j)2f30zg21y@(qzk!%!+7+y=*0mj&x_me^9un&mr-ggwe7ac
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+USE_TZ = True
 
+DJANGO_SETTINGS_MODULE = "garderie_educatrice.settings"
 ALLOWED_HOSTS = ['testserver']
 
 AUTH_USER_MODEL = "educatrice.Educatrice"
@@ -33,11 +34,11 @@ AUTH_USER_MODEL = "educatrice.Educatrice"
 
 # Application definition
 PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.ScryptPasswordHasher",
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
     "django.contrib.auth.hashers.Argon2PasswordHasher",
-    "django.contrib.auth.hashers.ScryptPasswordHasher",
 ]
 
 INSTALLED_APPS = [
@@ -97,15 +98,17 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
         'TEST': {
-            'NAME': 'garderie_test',
-            'DEPENDENCIES': ['test_db'],
+            'NAME': 'test_db_educatrice_test',
+            'DEPENDENCIES': ['db_educatrice_test'],
         }
     },
-    'test_db': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_DIR, 'test.db'),
-        'USER': 'admin',
-        'PASSWORD': 'admin',
+    'db_educatrice_test': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db_educatrice_test',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '3306',
         'TEST': {
             'DEPENDENCIES': [],
         }
@@ -154,4 +157,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ORIGINAL_ALLOW_ALL= True
+CORS_ORIGINAL_ALLOW_ALL = True

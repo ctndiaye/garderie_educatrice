@@ -7,6 +7,7 @@ MSG_CONFIRMER_MODIFICATION = "Modification faite avec succès !"
 MSG_MOT_DE_PASSE_CONFIRMATION_DIFERENT = "Le mot de passe et la confirmation sont différente"
 MSG_MOT_DE_PASSE_INCORRECT = "Le mot de passe est incorrect"
 MSG_CREDENTIAL_INCORRECT = "Nom d'utilisateur et/ou mot de passe incorrect"
+MSG_PASSWORD_INCORRECT = "Le mot de passe incorrect"
 MSG_CREDENTIAL_CORRECT = "Vous êtes connecté"
 
 

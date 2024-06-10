@@ -1,12 +1,13 @@
 from datetime import datetime
 
+import pytz
 from passlib.hash import sha256_crypt
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-from .exceptions import GarderieException
-
-from .tools import *
+from .tools import MSG_OBJET_SUPPRIME, MSG_MOT_DE_PASSE_CONFIRMATION_DIFERENT, delete_hidden_field, \
+    DEFAULT_HIDDEN_FIELDS, MSG_MOT_DE_PASSE_INCORRECT, MSG_CONFIRMER_MODIFICATION, MSG_CONFIRMER_SUPPRESSION, \
+    MSG_CREDENTIAL_INCORRECT, MSG_PASSWORD_INCORRECT
 
 from .serializers import EducatriceSerializer, PresenceSerializer
 
@@ -27,7 +28,7 @@ class EducatriceViewSet(viewsets.ModelViewSet):
 
     def creer(self, request):
         try:
-            request_data = {'date_creation': datetime.now(), 'date_modification': datetime.now(),
+            request_data = {'date_creation': datetime.now(tz=pytz.utc), 'date_modification': datetime.now(tz=pytz.utc),
                             'statut': StatutObjet.INSERT, 'adresse': request.data['adresse'],
                             'email': request.data['email'], 'est_active': request.data['est_active'],
                             'est_qualifie': request.data['est_qualifie'], 'last_name': request.data['last_name'],
@@ -70,13 +71,13 @@ class EducatriceViewSet(viewsets.ModelViewSet):
             educatrice.last_name = request_data['last_name']
 
             educatrice.statut = StatutObjet.UPDATE
-            educatrice.date_modification = datetime.now()
+            educatrice.date_modification = datetime.now(tz=pytz.utc)
 
             educatrice.save()
 
             serialized = EducatriceSerializer(educatrice, many=False)
             return Response(delete_hidden_field(serialized.data, DEFAULT_HIDDEN_FIELDS), status=status.HTTP_200_OK)
-        except Educatrice.DoesNotExist as ex:
+        except Educatrice.DoesNotExist:
             return Response({"error_msg": "Educatrice introuvable en base"},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except ValueError as ex:
@@ -101,9 +102,9 @@ class EducatriceViewSet(viewsets.ModelViewSet):
                                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             try:
-                if not sha256_crypt.verify(sha256_crypt.hash(current_passord), educatrice.password):
+                if not sha256_crypt.verify(current_passord, educatrice.password):
                     raise ValueError(MSG_MOT_DE_PASSE_INCORRECT)
-            except ValueError as ex:
+            except ValueError:
                 return Response({"error_msg": MSG_MOT_DE_PASSE_INCORRECT}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             educatrice.password = sha256_crypt.hash(new_passord)
@@ -134,7 +135,7 @@ class EducatriceViewSet(viewsets.ModelViewSet):
                 raise ValueError(MSG_OBJET_SUPPRIME)
 
             educatrice.statut = StatutObjet.DELETE
-            educatrice.date_modification = datetime.now()
+            educatrice.date_modification = datetime.now(tz=pytz.utc)
             educatrice.save()
 
             return Response(MSG_CONFIRMER_SUPPRESSION, status=status.HTTP_200_OK)
@@ -152,7 +153,7 @@ class EducatriceViewSet(viewsets.ModelViewSet):
             return Response({"error_msg": MSG_CREDENTIAL_INCORRECT}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         if not sha256_crypt.verify(request.data['password'], educatrice.password):
-            return Response({"error_msg": MSG_CREDENTIAL_INCORRECT}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error_msg": MSG_PASSWORD_INCORRECT}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             serialized = EducatriceSerializer(educatrice, many=False)
             return Response(delete_hidden_field(serialized.data, DEFAULT_HIDDEN_FIELDS), status=status.HTTP_200_OK)
@@ -173,10 +174,8 @@ class PresenceViewSet(viewsets.ModelViewSet):
 
     def creer(self, request):
         try:
-            request_data = {}
-            request_data['heure_evenement'] = datetime.now()
-            request_data['type_evenement'] = request.data['type_evenement']
-            request_data['educatrice'] = request.data['educatrice']
+            request_data = {'heure_evenement': datetime.now(tz=pytz.utc),
+                            'type_evenement': request.data['type_evenement'], 'educatrice': request.data['educatrice']}
 
             serialized = PresenceSerializer(data=request_data)
             serialized.is_valid(raise_exception=True)

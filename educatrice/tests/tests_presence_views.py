@@ -1,60 +1,52 @@
-from datetime import datetime
-from passlib.hash import bcrypt_sha256
-from rest_framework import status
-from rest_framework.response import Response
-import json
-from django.test import TestCase
-import pytest
-
 import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "garderie_educatrice.settings")
-
 import django
 
 django.setup()
-
 from django.core.management import call_command
 
-from educatrice.models import Educatrice, Evenement, Presence
-from educatrice.tools import *
+from educatrice.models import Educatrice
 
-from garderie_educatrice import settings
+from rest_framework import status
+import json
+from django.test import TestCase
+import pytest
 
 pytestmark = pytest.mark.django_db
 
 
 @pytest.mark.django_db
 class EducatriceTestViewsClass(TestCase):
-    databases = ['test_db', 'default']
+    databases = ['db_educatrice_test', 'default']
+
+    presence_data_dict = {
+        "type_evenement": "depart",
+        "educatrice": 1
+    }
 
     @classmethod
     def setUpTestData(cls):
-        # eduatrices = Educatrice.objects.all().delete()
-        # print(f"eduatrices: {len(eduatrices)}")
-        # Create 10 educatrices for pagination tests
-        number_of_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        for educatrice_id in number_of_ids:
-            print(f"educatrice_id = {educatrice_id}")
-            Educatrice \
-                .objects \
-                .create_user(last_name=f"dion{educatrice_id}", first_name=f"celine{educatrice_id}",
-                             adresse=f"quebec{educatrice_id}", nom_contact=f"rdion{educatrice_id}",
-                             prenom_contact=f"roland{educatrice_id}", telephone_contact=f"514 111 111{educatrice_id}",
-                             sexe="feminin", telephone=f"514 222 222{educatrice_id}", est_qualifie=True,
-                             username=f"roland{educatrice_id}",
-                             password=bcrypt_sha256.encrypt(f"r0l@nd{educatrice_id}"),
-                             email=f"roland{educatrice_id}@gmail.com", is_active=True)
-
-        yield
+        pass
 
     def setUp(self):
         print("setUp: Run once for every test method to setup clean data.")
         pass
 
-    ############################ PRESENCE ############################
     @pytest.mark.django_db
     def test_presence_view_creer(self):
+        educatrice_id = 1
+        Educatrice. \
+            objects. \
+            create_user(id=educatrice_id, last_name=f"dion{educatrice_id}",
+                        first_name=f"celine{educatrice_id}", adresse=f"quebec{educatrice_id}",
+                        nom_contact=f"rdion{educatrice_id}", prenom_contact=f"roland{educatrice_id}",
+                        telephone_contact=f"514 111 111{educatrice_id}", sexe="feminin",
+                        telephone=f"514 222 222{educatrice_id}",
+                        est_qualifie=True, username=f"roland{educatrice_id}",
+                        password=f"roland{educatrice_id}",
+                        email=f"roland{educatrice_id}@gmail.com", is_active=True)
+
         response = self.client.post('/api/presences', self.presence_data_dict)
 
         response_json = json.loads(response.content)
@@ -71,7 +63,8 @@ class EducatriceTestViewsClass(TestCase):
 
     @pytest.mark.django_db
     def test_presence_view_rechercher_par_educatrice_existe(self):
-        response = self.client.get('/api/presences/1')
+        educatrice_id = 1
+        response = self.client.get(f'/api/presences/{educatrice_id}')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsNot(response.content, None)
         self.assertIsNot(response.content, [])
