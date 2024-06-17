@@ -31,7 +31,6 @@ class EducatriceTestViewsClass(TestCase):
 
     def setUp(self):
         print("setUp: Run once for every test method to setup clean data.")
-        pass
 
     @pytest.mark.django_db
     def test_presence_view_creer(self):

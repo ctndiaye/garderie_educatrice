@@ -1,0 +1,2 @@
+pytest --cov-report html --cov educatrice/tests
+sonar-scanner.bat -D"sonar.projectKey=Garderie_Python" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000/" -D"sonar.token=sqp_4dafa58742da1b721cf641246c6aa80280619a70"
